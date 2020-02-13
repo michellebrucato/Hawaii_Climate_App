@@ -12,6 +12,7 @@ pandas = "*"
 matplotlib = "*"
 sqlalchemy = "*"
 pymysql = "*"
+nb-black = "*"
 
 [requires]
 python_version = "3.8"
