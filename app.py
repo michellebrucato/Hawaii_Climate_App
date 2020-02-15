@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, request
-from datetime import datetime
+from flask import Flask, jsonify, request, render_template
+import datetime as dt
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -29,8 +29,8 @@ def welcome():
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end></h3><br/></center></style>"
+        f"/api/v1.0/start<br/>"
+        f"/api/v1.0/start/end</h3><br/></center></style>"
     )
 
 
@@ -39,7 +39,7 @@ def prcp():
     """Query the precipitation from the past 12 months of the dataset"""
     past_year_prcp = (
         session.query(Measurement.date, func.avg(Measurement.prcp))
-        .filter(Measurement.date >= past_year)
+        .filter(Measurement.date >= dt.datetime(2016, 8, 23))
         .group_by(Measurement.date)
         .all()
     )
@@ -58,7 +58,7 @@ def tobs():
     """Query Temperature Observations (tobs) from the last year of the dataset"""
     past_year_tobs = (
         session.query(Measurement.date, Measurement.station, Measurement.tobs)
-        .filter(Measurement.date >= past_year)
+        .filter(Measurement.date >= dt.datetime(2016, 8, 23))
         .all()
     )
     return jsonify(past_year_tobs)
